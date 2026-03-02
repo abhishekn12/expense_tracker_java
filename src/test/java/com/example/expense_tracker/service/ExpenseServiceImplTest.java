@@ -1,6 +1,7 @@
 package com.example.expense_tracker.service;
 
 import com.example.expense_tracker.Expense;
+import com.example.expense_tracker.exceptions.ResourceNotFoundException;
 import com.example.expense_tracker.repository.ExpenseRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,5 +50,21 @@ public class ExpenseServiceImplTest {
         assertThat(foundExpense).isNotNull();
         assertThat(foundExpense.getName()).isEqualTo("Internet Bill");
         verify(expenseRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void getExpenseById_ShouldThrowException_WhenIdDoesNotExist() {
+        when(expenseRepository.findById(2L)).thenReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> {
+            expenseService.getExpenseById(2L);
+        });
+    }
+
+    @Test
+    void saveExpenseDetails_ShouldReturnSavedExpense() {
+        when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
+        Expense savedExpense = expenseService.saveExpenseDetails(expense);
+        assertThat(savedExpense).isNotNull();
+        assertThat(savedExpense.getAmount()).isEqualTo(new BigDecimal("50.00"));
     }
 }
