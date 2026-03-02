@@ -25,7 +25,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public Expense getExpenseById(Long id) {
         return expenseRepository.findById(id).orElseThrow(
-                ()-> new ResourceNotFoundException("Expense with id " + id + " not found"));
+                () -> new ResourceNotFoundException("Expense with id " + id + " not found"));
     }
 
     @Override
