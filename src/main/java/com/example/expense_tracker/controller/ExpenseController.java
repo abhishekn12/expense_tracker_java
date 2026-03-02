@@ -15,7 +15,6 @@ public class ExpenseController {
 
     private final ExpenseService expenseService;
 
-    // Constructor Injection
     public ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
     }
