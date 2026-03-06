@@ -33,7 +33,7 @@ public class ExpenseController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/expenses")
-    public ExpenseResponse saveExpenseDetails(@Valid @RequestBody ExpenseRequest expense) {
+    public ExpenseResponse saveExpenseDetails(@Valid @RequestBody ExpenseRequest request) {
         return expenseService.saveExpenseDetails(request);
     }
 
