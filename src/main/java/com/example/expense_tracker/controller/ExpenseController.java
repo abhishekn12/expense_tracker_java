@@ -2,6 +2,8 @@ package com.example.expense_tracker.controller;
 
 
 import com.example.expense_tracker.Expense;
+import com.example.expense_tracker.dto.ExpenseRequest;
+import com.example.expense_tracker.dto.ExpenseResponse;
 import com.example.expense_tracker.service.ExpenseService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -31,8 +33,8 @@ public class ExpenseController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/expenses")
-    public Expense saveExpenseDetails(@Valid @RequestBody Expense expense) {
-        return expenseService.saveExpenseDetails(expense);
+    public ExpenseResponse saveExpenseDetails(@Valid @RequestBody ExpenseRequest expense) {
+        return expenseService.saveExpenseDetails(request);
     }
 
     @PutMapping("/expenses/{id}")

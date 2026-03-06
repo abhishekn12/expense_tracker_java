@@ -1,9 +1,11 @@
 package com.example.expense_tracker.service;
 
 import com.example.expense_tracker.Expense;
+import com.example.expense_tracker.dto.ExpenseRequest;
+import com.example.expense_tracker.dto.ExpenseResponse;
 import com.example.expense_tracker.exceptions.ResourceNotFoundException;
 import com.example.expense_tracker.repository.ExpenseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.expense_tracker.util.ExpenseMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Expense saveExpenseDetails(Expense expense) {
-        return expenseRepository.save(expense);
+    public ExpenseResponse saveExpenseDetails(ExpenseRequest request) {
+        Expense expense = ExpenseMapper.mapToEntity(request);
+        Expense savedExpense = expenseRepository.save(expense);
+//response
+        return ExpenseMapper.mapToResponse(savedExpense);
     }
 
     @Override
