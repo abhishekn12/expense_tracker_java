@@ -1,5 +1,6 @@
 package com.example.expense_tracker;
 
+import com.example.expense_tracker.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,4 +42,8 @@ public class Expense {
     @Column(nullable = false)
     @NotNull(message = "Data needed")
     private LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
