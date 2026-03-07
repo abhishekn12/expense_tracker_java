@@ -13,4 +13,5 @@ public interface ExpenseService {
     Expense updateExpenseDetails(Long Id, ExpenseRequest expense);
     void deleteExpenseById(Long id);
     Page<Expense> getExpensesByCategory(String category, Pageable pageable);
+    Page<ExpenseResponse> getExpensesByKeyword(String keyword, Pageable pageable);
 }

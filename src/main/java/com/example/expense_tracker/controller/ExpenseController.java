@@ -56,4 +56,9 @@ public class ExpenseController {
     public Page<ExpenseResponse> getExpensesByCategory(@RequestParam String category, Pageable pageable) {
         return expenseService.getExpensesByCategory(category, pageable).map(ExpenseMapper::mapToResponse);
     }
+
+    @GetMapping("/expenses/search")
+    public Page<ExpenseResponse> getExpensesByKeyword(@RequestParam String keyword, Pageable pageable) {
+        return expenseService.getExpensesByKeyword(keyword, pageable);
+    }
 }

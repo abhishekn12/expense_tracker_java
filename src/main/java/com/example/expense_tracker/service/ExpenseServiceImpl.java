@@ -72,4 +72,10 @@ public class ExpenseServiceImpl implements ExpenseService {
     public Page<Expense> getExpensesByCategory(String category, Pageable pageable) {
         return expenseRepository.findByCategory(category, pageable);
     }
+
+    @Override
+    public Page<ExpenseResponse> getExpensesByKeyword(String keyword, Pageable pageable) {
+        Page<Expense> expenses = expenseRepository.findBynameContainingIgnoreCase(keyword, pageable);
+        return expenses.map(ExpenseMapper::mapToResponse);
+    }
 }
