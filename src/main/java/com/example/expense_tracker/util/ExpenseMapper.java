@@ -24,7 +24,7 @@ public class ExpenseMapper {
                 .amount(entity.getAmount())
                 .category(entity.getCategory())
                 .date(entity.getDate())
+                .userEmail(entity.getUser() != null ? entity.getUser().getEmail() : null) // Safe check
                 .build();
-
     }
 }

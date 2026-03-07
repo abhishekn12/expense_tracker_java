@@ -10,7 +10,6 @@ import com.example.expense_tracker.repository.UserRepository;
 import com.example.expense_tracker.util.ExpenseMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,7 +47,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Expense updateExpenseDetails(Long Id, Expense expense) {
+    public Expense updateExpenseDetails(Long Id, ExpenseRequest expense) {
         Expense existingExpense = getExpenseById(Id);
 
         if(expense.getName() != null && !expense.getName().isEmpty()) {

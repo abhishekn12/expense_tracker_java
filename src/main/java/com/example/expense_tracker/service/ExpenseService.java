@@ -10,7 +10,7 @@ public interface ExpenseService {
     Page<Expense> getAllExpenses(Pageable pageable);
     Expense getExpenseById(Long id);
     ExpenseResponse saveExpenseDetails(ExpenseRequest request);
-    Expense updateExpenseDetails(Long Id, Expense expense);
+    Expense updateExpenseDetails(Long Id, ExpenseRequest expense);
     void deleteExpenseById(Long id);
     Page<Expense> getExpensesByCategory(String category, Pageable pageable);
 }

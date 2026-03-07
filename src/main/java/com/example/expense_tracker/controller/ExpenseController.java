@@ -5,6 +5,7 @@ import com.example.expense_tracker.Expense;
 import com.example.expense_tracker.dto.ExpenseRequest;
 import com.example.expense_tracker.dto.ExpenseResponse;
 import com.example.expense_tracker.service.ExpenseService;
+import com.example.expense_tracker.util.ExpenseMapper;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +23,14 @@ public class ExpenseController {
     }
 
     @GetMapping("/expenses")
-    public Page<Expense> getExpenses(Pageable pageable) {
-        return expenseService.getAllExpenses(pageable);
+    public Page<ExpenseResponse> getAllExpenses(Pageable pageable) {
+        // We map the Page of Entities to a Page of DTOs
+        return expenseService.getAllExpenses(pageable).map(ExpenseMapper::mapToResponse);
     }
 
     @GetMapping("/expenses/{id}")
-    public Expense getExpenseById(@PathVariable Long id) {
-        return expenseService.getExpenseById(id);
+    public ExpenseResponse getExpenseById(@PathVariable Long id) {
+        return ExpenseMapper.mapToResponse(expenseService.getExpenseById(id));
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -37,9 +39,10 @@ public class ExpenseController {
         return expenseService.saveExpenseDetails(request);
     }
 
+    // FIX 1: Use ExpenseRequest for input and ExpenseResponse for output
     @PutMapping("/expenses/{id}")
-    public Expense updateExpenseDetails(@PathVariable Long id, @RequestBody Expense expense) {
-        return expenseService.updateExpenseDetails(id, expense);
+    public Expense updateExpenseDetails(@PathVariable Long id, @RequestBody ExpenseRequest request) {
+        return expenseService.updateExpenseDetails(id, request);
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -48,8 +51,9 @@ public class ExpenseController {
         expenseService.deleteExpenseById(id);
     }
 
+    // FIX 2: Map the category results to DTOs to avoid the recursion error here too
     @GetMapping("/expenses/category")
-    public Page<Expense> getExpensesByCategory(@RequestParam String category, Pageable pageable) {
-        return expenseService.getExpensesByCategory(category, pageable);
+    public Page<ExpenseResponse> getExpensesByCategory(@RequestParam String category, Pageable pageable) {
+        return expenseService.getExpensesByCategory(category, pageable).map(ExpenseMapper::mapToResponse);
     }
 }
