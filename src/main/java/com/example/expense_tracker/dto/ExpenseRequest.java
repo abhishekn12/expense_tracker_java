@@ -1,5 +1,6 @@
 package com.example.expense_tracker.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -24,4 +25,15 @@ public class ExpenseRequest {
 
     @NotNull(message = "Date is required")
     private LocalDate date;
+
+    @JsonProperty("user_id")
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

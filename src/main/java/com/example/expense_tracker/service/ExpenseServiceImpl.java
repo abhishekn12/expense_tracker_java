@@ -3,8 +3,10 @@ package com.example.expense_tracker.service;
 import com.example.expense_tracker.Expense;
 import com.example.expense_tracker.dto.ExpenseRequest;
 import com.example.expense_tracker.dto.ExpenseResponse;
+import com.example.expense_tracker.entity.User;
 import com.example.expense_tracker.exceptions.ResourceNotFoundException;
 import com.example.expense_tracker.repository.ExpenseRepository;
+import com.example.expense_tracker.repository.UserRepository;
 import com.example.expense_tracker.util.ExpenseMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +16,11 @@ import org.springframework.stereotype.Service;
 public class ExpenseServiceImpl implements ExpenseService {
 
     private final ExpenseRepository expenseRepository;
+    private final UserRepository userRepository;
 
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository) {
+    public ExpenseServiceImpl(ExpenseRepository expenseRepository,  UserRepository userRepository) {
         this.expenseRepository = expenseRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -33,13 +37,17 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public ExpenseResponse saveExpenseDetails(ExpenseRequest request) {
         Expense expense = ExpenseMapper.mapToEntity(request);
-        Expense savedExpense = expenseRepository.save(expense);
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + request.getUserId()));
+
+        expense.setUser(user);
 //response
+        Expense savedExpense = expenseRepository.save(expense);
         return ExpenseMapper.mapToResponse(savedExpense);
     }
 
     @Override
-    public Expense updateExpenseDetails(Long Id, Expense expense) {
+    public Expense updateExpenseDetails(Long Id, ExpenseRequest expense) {
         Expense existingExpense = getExpenseById(Id);
 
         if(expense.getName() != null && !expense.getName().isEmpty()) {
